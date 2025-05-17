@@ -1,5 +1,10 @@
-import { notFound } from 'next/navigation';
+'use server';
+
+import 'server-only';
+import { notFound, redirect, RedirectType } from 'next/navigation';
 import { BlogPost } from './model';
+import { revalidatePath } from 'next/cache';
+import _ from 'lodash';
 
 export async function getPosts() {
   return blogPosts.sort(
@@ -11,6 +16,41 @@ export async function getPost(slug: string) {
   const post = blogPosts.find((value) => value.slug === slug);
   if (!post) notFound();
   return post;
+}
+
+export async function createPost(formData: FormData) {
+  const rawFormData = {
+    title: formData.get('title'),
+    content: formData.get('content'),
+    tags: formData.get('tags'),
+  };
+
+  if (
+    typeof rawFormData.title !== 'string' ||
+    typeof rawFormData.content !== 'string'
+  )
+    return;
+
+  const post: BlogPost = {
+    author: 'dime',
+    createdAt: new Date(),
+    slug: _.kebabCase(rawFormData.title),
+    title: rawFormData.title,
+    content: rawFormData.content,
+    tags:
+      typeof rawFormData.tags === 'string'
+        ? rawFormData.tags
+            .split(',')
+            .map((tag) => tag.trim())
+            .filter((tag) => !_.isEmpty(tag))
+        : [],
+  };
+
+  blogPosts.push(post);
+  console.log(`Updated posts: ${JSON.stringify(blogPosts)}`);
+
+  revalidatePath('/blog');
+  redirect('/blog', RedirectType.replace);
 }
 
 const blogPosts: BlogPost[] = [
