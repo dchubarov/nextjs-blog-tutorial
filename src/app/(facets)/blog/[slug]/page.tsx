@@ -1,5 +1,6 @@
 import { getPost } from '../_internal/lib/api';
 import BlogPost from '../_internal/ui/blog-post';
+import Link from 'next/link';
 
 export default async function Page({
   params,
@@ -9,5 +10,10 @@ export default async function Page({
   const { slug } = await params;
   const post = await getPost(slug);
 
-  return <BlogPost post={post} />;
+  return (
+    <>
+      <BlogPost post={post} />
+      <Link href={`/blog/${post.slug}/edit`}>Edit</Link>
+    </>
+  );
 }
