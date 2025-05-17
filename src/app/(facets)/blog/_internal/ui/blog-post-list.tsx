@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BlogPost } from '../_lib/model';
+import { BlogPost } from '../lib/model';
 
 export default function BlogPostList({ posts }: { posts: BlogPost[] }) {
   return (

@@ -2,18 +2,18 @@ import { notFound } from 'next/navigation';
 import { BlogPost } from './model';
 
 export async function getPosts() {
-  return mockBlogPosts.sort(
+  return blogPosts.sort(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
   );
 }
 
 export async function getPost(slug: string) {
-  const post = mockBlogPosts.find((value) => value.slug === slug);
+  const post = blogPosts.find((value) => value.slug === slug);
   if (!post) notFound();
   return post;
 }
 
-const mockBlogPosts: BlogPost[] = [
+const blogPosts: BlogPost[] = [
   {
     slug: 'phyllotaxis',
     title: 'Phyllotaxis',

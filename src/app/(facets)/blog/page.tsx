@@ -1,5 +1,5 @@
-import { getPosts } from './_lib/api';
-import BlogPostList from './_ui/blog-post-list';
+import { getPosts } from './_internal/lib/api';
+import BlogPostList from './_internal/ui/blog-post-list';
 
 export default async function Page() {
   const posts = await getPosts();

@@ -1,5 +1,5 @@
-import { getPost } from '../_lib/api';
-import BlogPost from '../_ui/blog-post';
+import { getPost } from '../_internal/lib/api';
+import BlogPost from '../_internal/ui/blog-post';
 
 export default async function Page({
   params,

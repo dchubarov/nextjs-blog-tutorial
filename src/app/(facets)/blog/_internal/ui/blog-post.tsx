@@ -1,4 +1,6 @@
-import { BlogPost as BlogPostModel } from '../_lib/model';
+'use client';
+
+import { BlogPost as BlogPostModel } from '../lib/model';
 
 export default function BlogPost({ post }: { post: BlogPostModel }) {
   return (
