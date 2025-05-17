@@ -1,5 +1,5 @@
 import { getPosts } from './_internal/lib/api';
-import BlogPostList from './_internal/ui/blog-post-list';
+import BlogPostList from './_internal/components/blog-post-list';
 import Link from 'next/link';
 
 export default async function Page() {

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { createPost } from '../_internal/lib/api';
-import BlogEntryForm from '../_internal/ui/blog-entry-form';
+import BlogEntryForm from '../_internal/components/blog-entry-form';
 
 export default function Page() {
   return (
