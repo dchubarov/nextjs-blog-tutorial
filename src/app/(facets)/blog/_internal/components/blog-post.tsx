@@ -5,9 +5,11 @@ import { BlogPost as BlogPostModel } from '../lib/model';
 export default function BlogPost({ post }: { post: BlogPostModel }) {
   return (
     <>
-      <h1 className="text-3xl font-bold">{post.title}</h1>
       <p className="text-gray-600">
-        @{post.author} on {post.createdAt.toLocaleString()}
+        @{post.author} on{' '}
+        {post.lastModifiedAt
+          ? `${post.lastModifiedAt.toLocaleString()} (Edited)`
+          : post.createdAt.toLocaleString()}
       </p>
       <p>{post.content}</p>
       {post.tags && (

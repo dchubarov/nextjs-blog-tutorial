@@ -12,6 +12,7 @@ export default async function Page({
 
   return (
     <>
+      <h1 className="text-3xl font-bold">{post.title}</h1>
       <BlogPost post={post} />
       <Link href={`/blog/${post.slug}/edit`}>Edit</Link>
     </>

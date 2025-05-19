@@ -1,10 +1,10 @@
 'use server';
-
 import 'server-only';
-import { notFound, redirect, RedirectType } from 'next/navigation';
-import { BlogPost } from './model';
-import { revalidatePath } from 'next/cache';
+
 import _ from 'lodash';
+import { notFound, redirect, RedirectType } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
+import { BlogPost } from './model';
 
 export async function getPosts() {
   return blogPosts.sort(
@@ -18,8 +18,9 @@ export async function getPost(slug: string) {
   return post;
 }
 
-export async function createPost(formData: FormData) {
+export async function createOrUpdatePost(formData: FormData) {
   const rawFormData = {
+    slug: formData.get('slug'),
     title: formData.get('title'),
     content: formData.get('content'),
     tags: formData.get('tags'),
@@ -28,27 +29,47 @@ export async function createPost(formData: FormData) {
   if (
     typeof rawFormData.title !== 'string' ||
     typeof rawFormData.content !== 'string'
-  )
+  ) {
+    console.warn('Invalid blog post update request content');
     return;
+  }
 
-  const post: BlogPost = {
-    author: 'dime',
-    createdAt: new Date(),
-    slug: _.kebabCase(rawFormData.title),
-    title: rawFormData.title,
-    content: rawFormData.content,
-    tags:
-      typeof rawFormData.tags === 'string'
-        ? rawFormData.tags
-            .split(',')
-            .map((tag) => tag.trim())
-            .filter((tag) => !_.isEmpty(tag))
-        : [],
-  };
+  let tags: string[] = [];
+  if (typeof rawFormData.tags === 'string') {
+    tags = rawFormData.tags
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => !_.isEmpty(tag));
+  }
 
-  blogPosts.push(post);
+  let post: BlogPost | undefined;
+  if (!!rawFormData.slug) {
+    const postIndex = blogPosts.findIndex(
+      (post) => post.slug === rawFormData.slug
+    );
+    if (postIndex < 0) {
+      console.warn(`Post not found for update: ${rawFormData.slug}`);
+      notFound();
+    }
+    post = blogPosts[postIndex];
+    post.title = rawFormData.title;
+    post.content = rawFormData.content;
+    post.tags = tags;
+    post.lastModifiedAt = new Date();
+  } else {
+    post = {
+      slug: _.kebabCase(rawFormData.title),
+      author: 'dime',
+      createdAt: new Date(),
+      title: rawFormData.title,
+      content: rawFormData.content,
+      tags,
+    };
+    blogPosts.push(post);
+  }
+
   console.log(`Updated posts: ${JSON.stringify(blogPosts)}`);
-
+  revalidatePath(`/blog/${post.slug}`);
   revalidatePath('/blog');
   redirect('/blog', RedirectType.replace);
 }
