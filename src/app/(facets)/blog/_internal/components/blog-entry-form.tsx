@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { BlogPost, FormValidationResult } from '../lib/model';
-import { createOrUpdatePost } from '../lib/api';
+import { createOrUpdatePost, deletePost } from '../lib/api';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { Field, FieldGroup, Fieldset, Label } from '@/components/fieldset';
@@ -12,6 +12,11 @@ const initialState: FormValidationResult = { messages: undefined };
 
 export default function BlogEntryForm({ post }: { post?: BlogPost }) {
   const [state, action] = useActionState(createOrUpdatePost, initialState);
+
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this post?'))
+      await deletePost(post!.slug);
+  };
 
   return (
     <form action={action}>
@@ -69,7 +74,7 @@ export default function BlogEntryForm({ post }: { post?: BlogPost }) {
           {post && (
             <>
               <span className="flex-1" />
-              <Button type="button" color="red">
+              <Button type="button" color="red" onClick={handleDelete}>
                 Delete
               </Button>
             </>

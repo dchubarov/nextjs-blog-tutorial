@@ -1,5 +1,5 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
 import { Link } from './link';
 
 export function Text({
@@ -10,7 +10,10 @@ export function Text({
     <p
       data-slot="text"
       {...props}
-      className={clsx(className, 'text-base text-zinc-900 dark:text-zinc-300')}
+      className={clsx(
+        className,
+        'text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400'
+      )}
     />
   );
 }

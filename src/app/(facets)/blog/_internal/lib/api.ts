@@ -124,3 +124,9 @@ export async function createOrUpdatePost(
     RedirectType.replace
   );
 }
+
+export async function deletePost(slug: string) {
+  await prisma.blogPost.delete({ where: { slug } });
+  revalidatePath('/blog');
+  redirect('/blog');
+}
