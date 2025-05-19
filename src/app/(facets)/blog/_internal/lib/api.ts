@@ -1,24 +1,33 @@
 'use server';
-import 'server-only';
 
-import _ from 'lodash';
+import 'server-only';
 import { notFound, redirect, RedirectType } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { BlogPost } from './model';
+import _ from 'lodash';
 
-export async function getPosts() {
+import { BlogPost, FormValidationResult } from './model';
+
+async function findPostBySlug(slug: string): Promise<BlogPost | undefined> {
+  return blogPosts.find((value) => value.slug === slug);
+}
+
+export async function getAllPosts() {
+  console.log(JSON.stringify(blogPosts));
   return blogPosts.sort(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
   );
 }
 
 export async function getPost(slug: string) {
-  const post = blogPosts.find((value) => value.slug === slug);
+  const post = await findPostBySlug(slug);
   if (!post) notFound();
   return post;
 }
 
-export async function createOrUpdatePost(formData: FormData) {
+export async function createOrUpdatePost(
+  _prevState: FormValidationResult,
+  formData: FormData
+): Promise<FormValidationResult> {
   const rawFormData = {
     slug: formData.get('slug'),
     title: formData.get('title'),
@@ -28,10 +37,11 @@ export async function createOrUpdatePost(formData: FormData) {
 
   if (
     typeof rawFormData.title !== 'string' ||
-    typeof rawFormData.content !== 'string'
+    typeof rawFormData.content !== 'string' ||
+    rawFormData.title === '' ||
+    rawFormData.content === ''
   ) {
-    console.warn('Invalid blog post update request content');
-    return;
+    return { messages: ['Both title and content must be non-empty'] };
   }
 
   let tags: string[] = [];
@@ -44,21 +54,25 @@ export async function createOrUpdatePost(formData: FormData) {
 
   let post: BlogPost | undefined;
   if (!!rawFormData.slug) {
-    const postIndex = blogPosts.findIndex(
-      (post) => post.slug === rawFormData.slug
-    );
-    if (postIndex < 0) {
+    post = await findPostBySlug(rawFormData.slug as string);
+    if (!post) {
       console.warn(`Post not found for update: ${rawFormData.slug}`);
       notFound();
     }
-    post = blogPosts[postIndex];
     post.title = rawFormData.title;
     post.content = rawFormData.content;
     post.tags = tags;
     post.lastModifiedAt = new Date();
   } else {
+    const slug = _.kebabCase(rawFormData.title);
+    const otherPost = await findPostBySlug(slug);
+    if (!!otherPost) {
+      return {
+        messages: ['This slug is already taken, try changing post title'],
+      };
+    }
     post = {
-      slug: _.kebabCase(rawFormData.title),
+      slug,
       author: 'dime',
       createdAt: new Date(),
       title: rawFormData.title,

@@ -1,9 +1,9 @@
-import { getPosts } from './_internal/lib/api';
+import { getAllPosts } from './_internal/lib/api';
 import BlogPostList from './_internal/components/blog-post-list';
 import Link from 'next/link';
 
 export default async function Page() {
-  const posts = await getPosts();
+  const posts = await getAllPosts();
 
   return (
     <>

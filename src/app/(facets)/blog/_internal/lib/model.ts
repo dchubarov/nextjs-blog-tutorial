@@ -7,3 +7,7 @@ export interface BlogPost {
   createdAt: Date;
   lastModifiedAt?: Date;
 }
+
+export interface FormValidationResult {
+  messages?: string[];
+}
