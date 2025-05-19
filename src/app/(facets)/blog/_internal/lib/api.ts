@@ -111,7 +111,6 @@ export async function createOrUpdatePost(
         author: 'dime',
         content: rawFormData.content,
         tags: tagsString,
-        createdAt: new Date(),
       },
     });
 

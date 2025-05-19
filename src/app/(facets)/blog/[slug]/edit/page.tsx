@@ -1,6 +1,6 @@
 import { getPost } from '../../_internal/lib/api';
 import BlogEntryForm from '../../_internal/components/blog-entry-form';
-import { Heading } from '@/components/heading';
+import PageLayout from '@/components/page-layout';
 
 export default async function Page({
   params,
@@ -11,9 +11,8 @@ export default async function Page({
   const post = await getPost(slug);
 
   return (
-    <>
-      <Heading level={1}>Edit - {post.title}</Heading>
+    <PageLayout.Content title={`Edit - ${post.title}`}>
       <BlogEntryForm post={post} />
-    </>
+    </PageLayout.Content>
   );
 }

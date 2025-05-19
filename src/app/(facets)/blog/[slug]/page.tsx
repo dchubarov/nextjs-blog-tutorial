@@ -1,7 +1,7 @@
 import { getPost } from '../_internal/lib/api';
 import BlogPost from '../_internal/components/blog-post';
-import { Heading } from '@/components/heading';
-import { TextLink } from '@/components/text';
+import PageLayout from '@/components/page-layout';
+import { Button } from '@/components/button';
 
 export default async function Page({
   params,
@@ -12,10 +12,11 @@ export default async function Page({
   const post = await getPost(slug);
 
   return (
-    <>
-      <Heading level={1}>{post.title}</Heading>
+    <PageLayout.Content title={post.title}>
       <BlogPost post={post} />
-      <TextLink href={`/blog/${post.slug}/edit`}>Edit</TextLink>
-    </>
+      <Button href={`/blog/${post.slug}/edit`} plain>
+        Edit
+      </Button>
+    </PageLayout.Content>
   );
 }

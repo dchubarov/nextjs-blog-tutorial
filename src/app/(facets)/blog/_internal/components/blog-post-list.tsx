@@ -1,14 +1,16 @@
 'use client';
 
 import { BlogPost } from '../lib/model';
-import { TextLink } from '@/components/text';
+import { Text, TextLink } from '@/components/text';
 
 export default function BlogPostList({ posts }: { posts: BlogPost[] }) {
   return (
-    <ul className="list-disc list-inside">
+    <ul className="list-disc">
       {posts.map((post) => (
         <li key={post.slug}>
-          <TextLink href={`/blog/${post.slug}`}>{post.title}</TextLink>
+          <Text>
+            <TextLink href={`/blog/${post.slug}`}>{post.title}</TextLink>
+          </Text>
         </li>
       ))}
     </ul>

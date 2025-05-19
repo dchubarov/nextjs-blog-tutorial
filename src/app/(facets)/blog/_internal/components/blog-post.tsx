@@ -2,21 +2,23 @@
 
 import { BlogPost as BlogPostModel } from '../lib/model';
 import { Text } from '@/components/text';
+import { Subheading } from '@/components/heading';
+import { Badge } from '@/components/badge';
 
 export default function BlogPost({ post }: { post: BlogPostModel }) {
   return (
     <>
-      <Text>
+      <Subheading>
         @{post.author} on{' '}
         {post.lastModifiedAt
           ? `${post.lastModifiedAt.toLocaleString()} (Edited)`
           : post.createdAt.toLocaleString()}
-      </Text>
+      </Subheading>
       <Text>{post.content}</Text>
       {post.tags && (
         <div className="flex flex-row gap-1 text-gray-600">
           {post.tags.map((tag) => (
-            <div key={tag}>{tag}</div>
+            <Badge key={tag}>{tag}</Badge>
           ))}
         </div>
       )}

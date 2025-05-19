@@ -55,7 +55,7 @@ export default function BlogEntryForm({ post }: { post?: BlogPost }) {
           </Field>
 
           {state.messages && (
-            <ul className="list-disc list-inside text-red-600">
+            <ul className="list-disc text-red-500 text-base/6 sm:text-sm/6">
               {state.messages.map((msg, i) => (
                 <li key={i}>{msg}</li>
               ))}

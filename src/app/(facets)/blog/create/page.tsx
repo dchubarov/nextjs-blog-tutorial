@@ -1,11 +1,10 @@
 import BlogEntryForm from '../_internal/components/blog-entry-form';
-import { Heading } from '@/components/heading';
+import PageLayout from '@/components/page-layout';
 
 export default function Page() {
   return (
-    <>
-      <Heading level={1}>Create post</Heading>
+    <PageLayout.Content title="Create post">
       <BlogEntryForm />
-    </>
+    </PageLayout.Content>
   );
 }

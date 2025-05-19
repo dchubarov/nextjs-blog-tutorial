@@ -1,16 +1,17 @@
 import { getAllPosts } from './_internal/lib/api';
 import BlogPostList from './_internal/components/blog-post-list';
-import { Heading } from '@/components/heading';
-import { TextLink } from '@/components/text';
+import PageLayout from '@/components/page-layout';
+import { Button } from '@/components/button';
 
 export default async function Page() {
   const posts = await getAllPosts();
 
   return (
-    <>
-      <Heading level={1}>Blog</Heading>
+    <PageLayout.Content title="Recent entries">
       <BlogPostList posts={posts} />
-      <TextLink href="/blog/create">Create new</TextLink>
-    </>
+      <Button href="/blog/create" plain>
+        Create new
+      </Button>
+    </PageLayout.Content>
   );
 }

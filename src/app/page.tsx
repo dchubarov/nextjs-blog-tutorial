@@ -1,10 +1,12 @@
-import Link from 'next/link';
+import PageLayout from '@/components/page-layout';
+import { Button } from '@/components/button';
 
 export default function Page() {
   return (
-    <>
-      <h1 className="text-3xl font-bold">Homepage</h1>
-      <Link href="/blog">Navigate to blog</Link>
-    </>
+    <PageLayout.Content title="Homepage">
+      <Button href="/blog" plain>
+        Blog
+      </Button>
+    </PageLayout.Content>
   );
 }
