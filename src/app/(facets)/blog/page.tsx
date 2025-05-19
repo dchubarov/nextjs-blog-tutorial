@@ -1,15 +1,16 @@
 import { getAllPosts } from './_internal/lib/api';
 import BlogPostList from './_internal/components/blog-post-list';
-import Link from 'next/link';
+import { Heading } from '@/components/heading';
+import { TextLink } from '@/components/text';
 
 export default async function Page() {
   const posts = await getAllPosts();
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Blog</h1>
+      <Heading level={1}>Blog</Heading>
       <BlogPostList posts={posts} />
-      <Link href="/blog/create">Create new</Link>
+      <TextLink href="/blog/create">Create new</TextLink>
     </>
   );
 }

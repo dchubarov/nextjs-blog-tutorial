@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "@/components/*": ["./src/components/*"],
       "@/generated/*": ["./src/generated/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/styles/*": ["./src/styles/*"]

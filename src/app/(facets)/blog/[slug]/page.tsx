@@ -1,6 +1,7 @@
 import { getPost } from '../_internal/lib/api';
 import BlogPost from '../_internal/components/blog-post';
-import Link from 'next/link';
+import { Heading } from '@/components/heading';
+import { TextLink } from '@/components/text';
 
 export default async function Page({
   params,
@@ -12,9 +13,9 @@ export default async function Page({
 
   return (
     <>
-      <h1 className="text-3xl font-bold">{post.title}</h1>
+      <Heading level={1}>{post.title}</Heading>
       <BlogPost post={post} />
-      <Link href={`/blog/${post.slug}/edit`}>Edit</Link>
+      <TextLink href={`/blog/${post.slug}/edit`}>Edit</TextLink>
     </>
   );
 }

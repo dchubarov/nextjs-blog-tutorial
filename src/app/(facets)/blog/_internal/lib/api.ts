@@ -93,7 +93,6 @@ export async function createOrUpdatePost(
 
     revalidatePath(`/blog/${rawFormData.slug}`);
   } else {
-    // Create new post
     const slug = _.kebabCase(rawFormData.title);
     const existingPost = await prisma.blogPost.findUnique({
       where: { slug },
@@ -120,5 +119,8 @@ export async function createOrUpdatePost(
   }
 
   revalidatePath('/blog');
-  redirect('/blog', RedirectType.replace);
+  redirect(
+    rawFormData.slug ? `/blog/${rawFormData.slug}` : '/blog',
+    RedirectType.replace
+  );
 }

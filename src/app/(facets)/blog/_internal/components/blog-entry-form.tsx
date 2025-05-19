@@ -1,9 +1,12 @@
 'use client';
 
 import { useActionState } from 'react';
-import Link from 'next/link';
 import { BlogPost, FormValidationResult } from '../lib/model';
 import { createOrUpdatePost } from '../lib/api';
+import { Button } from '@/components/button';
+import { Input } from '@/components/input';
+import { Field, FieldGroup, Fieldset, Label } from '@/components/fieldset';
+import { Textarea } from '@/components/textarea';
 
 const initialState: FormValidationResult = { messages: undefined };
 
@@ -12,59 +15,68 @@ export default function BlogEntryForm({ post }: { post?: BlogPost }) {
 
   return (
     <form action={action}>
-      <div className="flex flex-col gap-1">
+      <Fieldset>
         <input type="hidden" name="slug" value={post?.slug} />
-        <label htmlFor="title">Title:</label>
-        <input
-          id="title"
-          type="text"
-          name="title"
-          defaultValue={post?.title}
-          placeholder="Post title"
-          autoFocus
-        />
+        <FieldGroup>
+          <Field>
+            <Label>Title</Label>
+            <Input
+              type="text"
+              name="title"
+              defaultValue={post?.title}
+              placeholder="Post title"
+              autoFocus
+            />
+          </Field>
 
-        <label htmlFor="content">Content:</label>
-        <textarea
-          id="content"
-          name="content"
-          defaultValue={post?.content}
-          placeholder="Post content"
-        />
+          <Field>
+            <Label>Content</Label>
+            <Textarea
+              name="content"
+              defaultValue={post?.content}
+              placeholder="Post content"
+              rows={6}
+            />
+          </Field>
 
-        <label htmlFor="tags">Tags:</label>
-        <input
-          id="tags"
-          type="text"
-          name="tags"
-          defaultValue={post?.tags?.join(', ')}
-          placeholder="Comma-separated tag(s)"
-        />
+          <Field>
+            <Label>Tags</Label>
+            <Input
+              name="tags"
+              type="text"
+              defaultValue={post?.tags?.join(', ')}
+              placeholder="Comma-separated tags"
+            />
+          </Field>
 
-        {state.messages && (
-          <ul className="list-disc list-inside text-red-600">
-            {state.messages.map((msg, i) => (
-              <li key={i}>{msg}</li>
-            ))}
-          </ul>
-        )}
+          {state.messages && (
+            <ul className="list-disc list-inside text-red-600">
+              {state.messages.map((msg, i) => (
+                <li key={i}>{msg}</li>
+              ))}
+            </ul>
+          )}
+        </FieldGroup>
 
-        <div className="flex gap-1">
-          <button type="submit" className="text-blue-600">
-            Save
-          </button>
-
-          <Link href={post?.slug ? `/blog/${post.slug}` : '/blog'} replace>
+        <FieldGroup className="flex gap-1">
+          <Button type="submit">Save</Button>
+          <Button
+            href={post?.slug ? `/blog/${post.slug}` : '/blog'}
+            replace
+            plain>
             Cancel
-          </Link>
-        </div>
-
-        {post && (
-          <button className="text-red-600" type="button">
-            Delete
-          </button>
-        )}
-      </div>
+          </Button>
+          {post && (
+            <>
+              <span className="flex-1" />
+              <Button type="button" color="red">
+                Delete
+              </Button>
+            </>
+          )}
+          <span /> {/* Avoid last-child resize */}
+        </FieldGroup>
+      </Fieldset>
     </form>
   );
 }

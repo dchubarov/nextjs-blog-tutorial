@@ -14,8 +14,11 @@
     "prisma:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.3",
     "@prisma/client": "^6.8.2",
     "@tailwindcss/postcss": "^4.1.7",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.12.1",
     "lodash": "^4.17.21",
     "next": "15.3.2",
     "postcss": "^8.5.3",

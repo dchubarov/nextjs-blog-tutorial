@@ -1,17 +1,18 @@
 'use client';
 
 import { BlogPost as BlogPostModel } from '../lib/model';
+import { Text } from '@/components/text';
 
 export default function BlogPost({ post }: { post: BlogPostModel }) {
   return (
     <>
-      <p className="text-gray-600">
+      <Text>
         @{post.author} on{' '}
         {post.lastModifiedAt
           ? `${post.lastModifiedAt.toLocaleString()} (Edited)`
           : post.createdAt.toLocaleString()}
-      </p>
-      <p>{post.content}</p>
+      </Text>
+      <Text>{post.content}</Text>
       {post.tags && (
         <div className="flex flex-row gap-1 text-gray-600">
           {post.tags.map((tag) => (
