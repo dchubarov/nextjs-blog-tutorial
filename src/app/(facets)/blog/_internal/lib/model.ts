@@ -5,7 +5,7 @@ export interface BlogPost {
   content: string;
   tags?: string[];
   createdAt: Date;
-  lastModifiedAt?: Date;
+  lastModifiedAt?: Date | null;
 }
 
 export interface FormValidationResult {

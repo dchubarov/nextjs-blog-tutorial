@@ -6,16 +6,32 @@ import { revalidatePath } from 'next/cache';
 import _ from 'lodash';
 
 import { BlogPost, FormValidationResult } from './model';
+import { prisma } from '@/lib/prisma';
 
 async function findPostBySlug(slug: string): Promise<BlogPost | undefined> {
-  return blogPosts.find((value) => value.slug === slug);
+  const post = await prisma.blogPost.findUnique({
+    where: { slug },
+  });
+
+  if (!post) return undefined;
+
+  return {
+    ...post,
+    tags: post.tags ? post.tags.split(',') : undefined,
+  };
 }
 
 export async function getAllPosts() {
-  console.log(JSON.stringify(blogPosts));
-  return blogPosts.sort(
-    (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-  );
+  const posts = await prisma.blogPost.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return posts.map((post) => ({
+    ...post,
+    tags: post.tags ? post.tags.split(',') : undefined,
+  }));
 }
 
 export async function getPost(slug: string) {
@@ -52,86 +68,57 @@ export async function createOrUpdatePost(
       .filter((tag) => !_.isEmpty(tag));
   }
 
-  let post: BlogPost | undefined;
+  const tagsString = tags.length > 0 ? tags.join(',') : null;
+
   if (!!rawFormData.slug) {
-    post = await findPostBySlug(rawFormData.slug as string);
-    if (!post) {
+    // Update existing post
+    const existingPost = await prisma.blogPost.findUnique({
+      where: { slug: rawFormData.slug as string },
+    });
+
+    if (!existingPost) {
       console.warn(`Post not found for update: ${rawFormData.slug}`);
       notFound();
     }
-    post.title = rawFormData.title;
-    post.content = rawFormData.content;
-    post.tags = tags;
-    post.lastModifiedAt = new Date();
+
+    await prisma.blogPost.update({
+      where: { slug: rawFormData.slug as string },
+      data: {
+        title: rawFormData.title,
+        content: rawFormData.content,
+        tags: tagsString,
+        lastModifiedAt: new Date(),
+      },
+    });
+
+    revalidatePath(`/blog/${rawFormData.slug}`);
   } else {
+    // Create new post
     const slug = _.kebabCase(rawFormData.title);
-    const otherPost = await findPostBySlug(slug);
-    if (!!otherPost) {
+    const existingPost = await prisma.blogPost.findUnique({
+      where: { slug },
+    });
+
+    if (existingPost) {
       return {
         messages: ['This slug is already taken, try changing post title'],
       };
     }
-    post = {
-      slug,
-      author: 'dime',
-      createdAt: new Date(),
-      title: rawFormData.title,
-      content: rawFormData.content,
-      tags,
-    };
-    blogPosts.push(post);
+
+    await prisma.blogPost.create({
+      data: {
+        slug,
+        title: rawFormData.title,
+        author: 'dime',
+        content: rawFormData.content,
+        tags: tagsString,
+        createdAt: new Date(),
+      },
+    });
+
+    revalidatePath(`/blog/${slug}`);
   }
 
-  console.log(`Updated posts: ${JSON.stringify(blogPosts)}`);
-  revalidatePath(`/blog/${post.slug}`);
   revalidatePath('/blog');
   redirect('/blog', RedirectType.replace);
 }
-
-const blogPosts: BlogPost[] = [
-  {
-    slug: 'phyllotaxis',
-    title: 'Phyllotaxis',
-    author: 'dime',
-    content:
-      'The regular arrangement of lateral organs (leaves on a stem, scales on ' +
-      'a cone axis, florets in a composite flower head) is an important aspect ' +
-      'of plant form, known as phyllotaxis. The extensive literature generated ' +
-      'by biologists’ and mathematicians’ interest in phyllotaxis is reviewed ' +
-      'by Erickson [36] and Jean [78]. The proposed models range widely from ' +
-      'purely geometric descriptions (for example, Coxeter [17]) to complex ' +
-      'physiological hypotheses tested by computer simulations (Hellendoorn ' +
-      'and Lindenmayer [59], Veen and Lindenmayer [151], Young [163]). This ' +
-      'chapter presents two models suitable for the synthesis of realistic images ' +
-      'of flowers and fruits that exhibit spiral phyllotactic patterns.',
-    createdAt: new Date(2024, 9, 5, 11, 34),
-    tags: ['tag1', 'tag2'],
-  },
-  {
-    slug: 'modeling-of-trees',
-    title: 'Modeling of trees',
-    author: 'dime',
-    content:
-      'Computer simulation of branching patterns has a relatively long history. Cellular–space ' +
-      'The first model was proposed by Ulam [149], (see also [138, pages 127– models ' +
-      '131]), and employed the concept of cellular automata that had been ' +
-      'developed earlier by von Neumann and Ulam [156]. The branching ' +
-      'pattern is created iteratively, starting with a single colored cell in a ' +
-      'triangular grid, then coloring cells that touch one and only one vertex ' +
-      'of a cell colored in the previous iteration step.',
-    createdAt: new Date(2024, 7, 5, 17, 12),
-    tags: ['tag1', 'tag3'],
-  },
-  {
-    slug: 'models-of-plant-organs',
-    title: 'Models of plant organs',
-    author: 'dime',
-    content:
-      'The standard computer graphics method for defining arbitrary surfaces Bicubic patches ' +
-      'makes use of bicubic patches [9, 10, 40]. A patch is defined by three ' +
-      'polynomials of third degree with respect to parameters s and t. The ' +
-      'following equation defines the x coordinate of a point on the patch:',
-    createdAt: new Date(2024, 6, 25, 19, 5),
-    tags: ['tag2'],
-  },
-];

@@ -43,3 +43,10 @@ next-env.d.ts
 # JetBrains
 .idea
 *.iml
+
+# Generated code
+src/generated
+
+# Local database
+prisma/dev.db
+prisma/dev.db.journal
