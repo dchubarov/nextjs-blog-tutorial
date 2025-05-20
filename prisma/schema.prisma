@@ -15,12 +15,13 @@ datasource db {
 }
 
 model BlogPost {
-  id             String    @id @default(uuid())
+  id             Int       @id @default(autoincrement())
   slug           String    @unique
   title          String
   author         String
   content        String
-  tags           String?   // Will be stored as comma-separated values
+  tags           String? // Will be stored as comma-separated values
   createdAt      DateTime  @default(now())
   lastModifiedAt DateTime?
+  version        Int       @default(1)
 }

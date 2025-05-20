@@ -6,6 +6,7 @@ export interface BlogPost {
   tags?: string[];
   createdAt: Date;
   lastModifiedAt?: Date | null;
+  version: number;
 }
 
 export interface FormValidationResult {

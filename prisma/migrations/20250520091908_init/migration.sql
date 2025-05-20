@@ -1,13 +1,14 @@
 -- CreateTable
 CREATE TABLE "BlogPost" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "author" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "tags" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "lastModifiedAt" DATETIME
+    "lastModifiedAt" DATETIME,
+    "version" INTEGER NOT NULL DEFAULT 1
 );
 
 -- CreateIndex

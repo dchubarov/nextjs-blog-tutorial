@@ -22,6 +22,7 @@ export default function BlogEntryForm({ post }: { post?: BlogPost }) {
     <form action={action}>
       <Fieldset>
         <input type="hidden" name="slug" value={post?.slug} />
+        <input type="hidden" name="version" value={post?.version} />
         <FieldGroup>
           <Field>
             <Label>Title</Label>

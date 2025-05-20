@@ -49,6 +49,7 @@ export async function createOrUpdatePost(
     title: formData.get('title'),
     content: formData.get('content'),
     tags: formData.get('tags'),
+    version: formData.get('version'),
   };
 
   if (
@@ -81,13 +82,22 @@ export async function createOrUpdatePost(
       notFound();
     }
 
+    const ver = _.isString(rawFormData.version)
+      ? parseInt(rawFormData.version)
+      : NaN;
+    if (_.isNaN(ver) || existingPost.version !== ver) {
+      console.warn('More recent version of the post is persistent');
+      notFound();
+    }
+
     await prisma.blogPost.update({
-      where: { slug: rawFormData.slug as string },
+      where: { slug: rawFormData.slug as string, version: ver },
       data: {
         title: rawFormData.title,
         content: rawFormData.content,
         tags: tagsString,
         lastModifiedAt: new Date(),
+        version: existingPost.version + 1,
       },
     });
 
