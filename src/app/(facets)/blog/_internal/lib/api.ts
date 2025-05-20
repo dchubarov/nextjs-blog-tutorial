@@ -69,7 +69,9 @@ export async function createOrUpdatePost(
     tags = rawFormData.tags
       .split(',')
       .map((tag) => tag.trim())
-      .filter((tag) => !_.isEmpty(tag));
+      .filter(
+        (tag, index, array) => !_.isEmpty(tag) && array.indexOf(tag) === index
+      );
   }
 
   const tagsString = tags.length > 0 ? tags.join(',') : null;
