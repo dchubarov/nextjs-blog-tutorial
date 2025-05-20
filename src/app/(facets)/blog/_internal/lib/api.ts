@@ -3,23 +3,26 @@
 import 'server-only';
 import { notFound, redirect, RedirectType } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { cache } from 'react';
 import _ from 'lodash';
 
 import { BlogPost, FormValidationResult } from './model';
 import { prisma } from '@/lib/prisma';
 
-async function findPostBySlug(slug: string): Promise<BlogPost | undefined> {
-  const post = await prisma.blogPost.findUnique({
-    where: { slug },
-  });
+const findPostBySlug = cache(
+  async (slug: string): Promise<BlogPost | undefined> => {
+    const post = await prisma.blogPost.findUnique({
+      where: { slug },
+    });
 
-  if (!post) return undefined;
+    if (!post) return undefined;
 
-  return {
-    ...post,
-    tags: post.tags ? post.tags.split(',') : undefined,
-  };
-}
+    return {
+      ...post,
+      tags: post.tags ? post.tags.split(',') : undefined,
+    };
+  }
+);
 
 export async function getAllPosts() {
   const posts = await prisma.blogPost.findMany({
