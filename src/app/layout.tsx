@@ -14,10 +14,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  breadcrumbs,
+  children,
+}: {
+  breadcrumbs: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={openSans.className}>
-      <body>{children}</body>
+      <body>
+        <header className="p-2">{breadcrumbs}</header>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }

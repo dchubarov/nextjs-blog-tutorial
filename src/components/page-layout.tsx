@@ -15,7 +15,7 @@ function Content({
           <Heading>{title}</Heading>
         </header>
       )}
-      <main>{children}</main>
+      {children}
     </div>
   );
 }
