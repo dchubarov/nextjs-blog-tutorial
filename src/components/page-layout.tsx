@@ -5,14 +5,16 @@ function Content({
   title,
   children,
 }: {
-  title: string;
+  title?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="p-4">
-      <header>
-        <Heading>{title}</Heading>
-      </header>
+      {title && (
+        <header>
+          <Heading>{title}</Heading>
+        </header>
+      )}
       <main>{children}</main>
     </div>
   );

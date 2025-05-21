@@ -7,11 +7,11 @@ export default async function Page() {
   const posts = await getAllPosts();
 
   return (
-    <PageLayout.Content title="Recent entries">
-      <BlogPostList posts={posts} />
+    <PageLayout.Content>
       <Button href="/blog/create" plain>
         Create new
       </Button>
+      <BlogPostList posts={posts} />
     </PageLayout.Content>
   );
 }
