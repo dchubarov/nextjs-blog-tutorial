@@ -8,6 +8,7 @@ import _ from 'lodash';
 
 import { BlogPost, FormValidationResult } from './model';
 import { prisma } from '@/lib/prisma';
+import { generateId } from '@/lib/idgen';
 
 const findPostBySlug = cache(
   async (slug: string): Promise<BlogPost | undefined> => {
@@ -108,7 +109,7 @@ export async function createOrUpdatePost(
 
     revalidatePath(`/blog/${rawFormData.slug}`);
   } else {
-    const slug = _.kebabCase(rawFormData.title);
+    const slug = generateId();
     const existingPost = await prisma.blogPost.findUnique({
       where: { slug },
     });

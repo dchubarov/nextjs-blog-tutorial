@@ -3,7 +3,7 @@
 import { Link } from '@/components/link';
 import { Breadcrumb } from '@/lib/breadcrumbs';
 
-export default function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
+export default function Breadcrumbs({ items = [] }: { items?: Breadcrumb[] }) {
   return (
     <nav aria-label="Breadcrumb" className="flex">
       <ol role="list" className="flex items-center space-x-1">
