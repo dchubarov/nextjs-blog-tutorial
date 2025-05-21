@@ -1,5 +1,4 @@
 import React from 'react';
-import { Heading } from '@/components/heading';
 
 function Content({
   title,
@@ -12,7 +11,9 @@ function Content({
     <div className="p-4">
       {title && (
         <header>
-          <Heading>{title}</Heading>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-4xl">
+            {title}
+          </h2>
         </header>
       )}
       {children}
