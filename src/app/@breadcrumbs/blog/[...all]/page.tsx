@@ -11,7 +11,7 @@ export default async function BreadcrumbsSlot({
   const b = breadcrumbs(...all);
   if (b.length > 1 && b[1].pathname !== 'create') {
     const post = await getPost(b[1].pathname);
-    b[1].title = `${post.title} [${post.slug}]`;
+    b[1].title = post.title;
   }
 
   return <Breadcrumbs items={b} />;

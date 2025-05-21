@@ -7,6 +7,9 @@ export default function Page() {
       <Button href="/blog" plain>
         Blog
       </Button>
+      <Button href="/about" plain>
+        About
+      </Button>
     </PageLayout.Content>
   );
 }
