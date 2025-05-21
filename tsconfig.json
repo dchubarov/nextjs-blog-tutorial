@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/components/*": ["./src/components/*"],
+      "@/features/*": ["./src/features/*"],
       "@/generated/*": ["./src/generated/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/styles/*": ["./src/styles/*"]

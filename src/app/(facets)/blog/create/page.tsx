@@ -1,4 +1,4 @@
-import BlogEntryForm from '../_internal/components/blog-entry-form';
+import BlogEntryForm from '@/features/blog/components/blog-entry-form';
 import PageLayout from '@/components/page-layout';
 import { Metadata } from 'next';
 

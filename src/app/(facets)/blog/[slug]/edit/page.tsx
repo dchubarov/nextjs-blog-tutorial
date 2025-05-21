@@ -1,5 +1,5 @@
-import { getPost } from '../../_internal/lib/api';
-import BlogEntryForm from '../../_internal/components/blog-entry-form';
+import { getPost } from '@/features/blog/lib/api';
+import BlogEntryForm from '@/features/blog/components/blog-entry-form';
 import PageLayout from '@/components/page-layout';
 import { Metadata } from 'next';
 

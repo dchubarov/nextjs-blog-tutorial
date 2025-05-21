@@ -1,15 +1,9 @@
 'use client';
 
-import _ from 'lodash';
 import { Link } from '@/components/link';
+import { Breadcrumb } from '@/lib/breadcrumbs';
 
-export default function Breadcrumbs({ pages }: { pages: string[] }) {
-  const buildLink = (i: number) => {
-    return i > 0
-      ? '/' + pages.slice(0, i).join('/') + `/${pages[i]}`
-      : `/${pages[0]}`;
-  };
-
+export default function Breadcrumbs({ items }: { items: Breadcrumb[] }) {
   return (
     <nav aria-label="Breadcrumb" className="flex">
       <ol role="list" className="flex items-center space-x-1">
@@ -29,8 +23,8 @@ export default function Breadcrumbs({ pages }: { pages: string[] }) {
             </svg>
           </Link>
         </li>
-        {pages.map((page, index) => (
-          <li key={page}>
+        {items.map((item, index) => (
+          <li key={item.href}>
             <div className="flex items-center">
               <svg
                 width="16"
@@ -44,14 +38,14 @@ export default function Breadcrumbs({ pages }: { pages: string[] }) {
                 <path d="m9 18 6-6-6-6" className="text-gray-400" />
               </svg>
               <span className="text-sm font-semibold text-gray-500 ml-1">
-                {index < pages.length - 1 ? (
+                {index < items.length - 1 ? (
                   <Link
                     className=" hover:text-gray-700 font-normal underline"
-                    href={buildLink(index)}>
-                    {_.capitalize(page)}
+                    href={item.href}>
+                    {item.title}
                   </Link>
                 ) : (
-                  _.capitalize(page)
+                  item.title
                 )}
               </span>
             </div>

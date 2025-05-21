@@ -1,5 +1,5 @@
-import { getPost } from '../_internal/lib/api';
-import BlogPost from '../_internal/components/blog-post';
+import { getPost } from '@/features/blog/lib/api';
+import BlogPost from '@/features/blog/components/blog-post';
 import PageLayout from '@/components/page-layout';
 import { Button } from '@/components/button';
 import { Metadata } from 'next';
