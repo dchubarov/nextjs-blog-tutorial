@@ -1,4 +1,4 @@
-import { getPost } from '@/features/blog/lib/api';
+import { getPost } from '@/features/blog/lib/actions';
 import BlogEntryForm from '@/features/blog/components/blog-entry-form';
 import PageLayout from '@/components/page-layout';
 import { Metadata } from 'next';

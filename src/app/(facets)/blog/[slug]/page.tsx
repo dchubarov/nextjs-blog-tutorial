@@ -1,4 +1,4 @@
-import { getPost } from '@/features/blog/lib/api';
+import { getPost } from '@/features/blog/lib/actions';
 import BlogPost from '@/features/blog/components/blog-post';
 import PageLayout from '@/components/page-layout';
 import { Button } from '@/components/button';

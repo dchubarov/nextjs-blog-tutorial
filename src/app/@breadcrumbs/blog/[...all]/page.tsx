@@ -1,6 +1,6 @@
 import Breadcrumbs from '@/components/breadcrumbs';
 import { breadcrumbs } from '@/lib/breadcrumbs';
-import { getPost } from '@/features/blog/lib/api';
+import { getPost } from '@/features/blog/lib/actions';
 
 export default async function BreadcrumbsSlot({
   params,

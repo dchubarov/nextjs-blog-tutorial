@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react';
 import { BlogPost, FormValidationResult } from '../lib/model';
-import { createOrUpdatePost, deletePost } from '../lib/api';
+import { createOrUpdatePost, deletePost } from '../lib/actions';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { Field, FieldGroup, Fieldset, Label } from '@/components/fieldset';
