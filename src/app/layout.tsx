@@ -2,6 +2,7 @@ import React from 'react';
 import { Open_Sans } from 'next/font/google';
 import '@/styles/globals.css';
 import { Metadata } from 'next';
+import BreadcrumbsProvider from '@/components/breadcrumbs-provider';
 
 const openSans = Open_Sans({
   subsets: ['latin', 'cyrillic'],
@@ -24,8 +25,9 @@ export default function Layout({
   return (
     <html lang="en" className={openSans.className}>
       <body>
-        <header className="p-2">{breadcrumbs}</header>
-        <main>{children}</main>
+        <BreadcrumbsProvider breadcrumbs={breadcrumbs}>
+          <main>{children}</main>
+        </BreadcrumbsProvider>
       </body>
     </html>
   );
