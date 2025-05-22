@@ -1,4 +1,5 @@
 import { PrismaClient } from '../src/generated/prisma';
+import { generateId } from '../src/lib/idgen';
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,7 @@ async function seedDatabase() {
     await prisma.blogPost.createMany({
       data: [
         {
-          slug: 'phyllotaxis',
+          slug: generateId(),
           title: 'Phyllotaxis',
           author: 'dime',
           content:
@@ -27,7 +28,7 @@ async function seedDatabase() {
           tags: 'tag1,tag2',
         },
         {
-          slug: 'modeling-of-trees',
+          slug: generateId(),
           title: 'Modeling of trees',
           author: 'dime',
           content:
@@ -42,7 +43,7 @@ async function seedDatabase() {
           tags: 'tag1,tag3',
         },
         {
-          slug: 'models-of-plant-organs',
+          slug: generateId(),
           title: 'Models of plant organs',
           author: 'dime',
           content:
