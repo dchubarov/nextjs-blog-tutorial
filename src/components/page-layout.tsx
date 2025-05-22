@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Content({
+export function Content({
   title,
   children,
 }: {
@@ -20,9 +20,3 @@ function Content({
     </div>
   );
 }
-
-const PageLayout = {
-  Content,
-};
-
-export default PageLayout;

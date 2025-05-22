@@ -1,6 +1,6 @@
 import { getAllPosts } from '@/features/blog/lib/actions';
 import BlogPostList from '@/features/blog/components/blog-post-list';
-import PageLayout from '@/components/page-layout';
+import * as PageLayout from '@/components/page-layout';
 import { Button } from '@/components/button';
 
 export default async function Page() {

@@ -1,5 +1,5 @@
 import BlogEntryForm from '@/features/blog/components/blog-entry-form';
-import PageLayout from '@/components/page-layout';
+import * as PageLayout from '@/components/page-layout';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

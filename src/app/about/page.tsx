@@ -1,4 +1,4 @@
-import PageLayout from '@/components/page-layout';
+import * as PageLayout from '@/components/page-layout';
 
 export default function AboutPage() {
   return (
